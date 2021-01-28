@@ -189,8 +189,8 @@ def criar_torneio(lutadores, torneios):
             peso_inicial = input("De: ")
             peso_final = input("Até: ")
             try:
-                peso_inicial = int(peso_inicial)
-                peso_final = int(peso_final)
+                peso_inicial = float(peso_inicial)
+                peso_final = float(peso_final)
                 if(peso_inicial < peso_final):
                     ok = True
                 else:
@@ -268,7 +268,7 @@ def cadastrar_lutador(lutadores, torneios):
     peso = input("Peso do lutador: ")
     while(ok == False):
         try:
-            peso = int(peso)
+            peso = float(peso)
             ok = True
         except:
             print("\nPeso inválido\n")
@@ -279,7 +279,7 @@ def cadastrar_lutador(lutadores, torneios):
     forca = input("Forca do lutador: ")
     while(ok == False):
         try:
-            forca = int(forca)
+            forca = float(forca)
             ok = True
         except:
             print("\nForca inválida\n")
@@ -313,7 +313,7 @@ def cadastrar_lutador(lutadores, torneios):
 
 def ver_lutadores_cadastrados(lutadores, torneios):
     for count in range(0,len(lutadores),1):
-        print(f"Lutador {count+1}: nome: {lutadores[count].nome}, idade: {lutadores[count].idade}\n")
+        print(f"Lutador {count+1}: nome: {lutadores[count].nome}\n")
     menu_lutador(lutadores, torneios)
     
 
