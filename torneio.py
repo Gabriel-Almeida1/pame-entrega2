@@ -26,7 +26,7 @@ def print_invalido():
     print()
 
 
-def start_menu(): # primeiro menu exibido para o usuario
+def start_menu(lutadores, torneios): # primeiro menu exibido para o usuario
     
     print("Bem vindo ao Torneio de artes marciais!")
     print()
@@ -47,13 +47,13 @@ def start_menu(): # primeiro menu exibido para o usuario
             return
         elif(opt == '1'):
             print()
-            menu_torneio()
+            menu_torneio(lutadores, torneios)
         elif(opt == '2'):
             print()
-            menu_lutador()
+            menu_lutador(lutadores, torneios)
         else:
             print()
-            torneio_random()
+            torneio_random(lutadores)
             
     else:
         print_invalido()
@@ -61,7 +61,7 @@ def start_menu(): # primeiro menu exibido para o usuario
 
             
 
-def menu_torneio(): # menu secundário de torneio
+def menu_torneio(lutadores, torneios): # menu secundário de torneio
     print("--- Menu de Torneio ---")
     print()
     print("Para criar um torneio digite 1")
@@ -85,7 +85,7 @@ def menu_torneio(): # menu secundário de torneio
             return
         elif(opt == '7'):
             print()
-            start_menu()
+            start_menu(lutadores, torneios)
         elif(opt == '1'):
             print()
             criar_torneio()
@@ -108,11 +108,11 @@ def menu_torneio(): # menu secundário de torneio
             
     else:
         print_invalido()
-        menu_torneio()
+        menu_torneio(lutadores, torneios)
         
     
 
-def menu_lutador(): # menu secundário de lutador
+def menu_lutador(lutadores, torneios): # menu secundário de lutador
     print("--- Menu de Lutador ---")
     print()
     print("Para cadastrar um lutador digite 1")
@@ -130,16 +130,16 @@ def menu_lutador(): # menu secundário de lutador
         
     if(ok == True):
         if(opt == '5'):
-            return
+            return 
         elif(opt == '4'):
             print()
-            start_menu()
+            start_menu(lutadores, torneios)
         elif(opt == '1'):
             print()
-            cadastrar_lutador()
+            cadastrar_lutador(lutadores, torneios)
         elif(opt == '2'):
             print()
-            ver_lutadores_cadastrados()
+            ver_lutadores_cadastrados(lutadores, torneios)
         else:
             print()
             ver_detalhes()
@@ -147,7 +147,6 @@ def menu_lutador(): # menu secundário de lutador
     else:
         print_invalido()
         menu_lutador()
-
 
 
 def menu_random(): # menu secundário de torneio random
@@ -175,11 +174,81 @@ def fazer_luta():
 
 # Funções do menu Lutador abaixo
 
-def cadastrar_lutador():
-    print("cadastrar_lutador()")
+def cadastrar_lutador(lutadores, torneios):
+    ok = False
+    
+    nome = input("Nome do lutador: ")
+    while(ok == False):
+        if(nome != ''):
+            ok = True
+        else:
+            print("\nNome inválido\n")
+            nome = input("Nome do lutador: ")
+    ok = False
 
-def ver_lutadores_cadastrados():
-    print("ver_lutadores_cadastrados")
+    
+    idade = input("Idade do lutador: ")
+    while(ok == False):
+        try:
+            idade = int(idade)
+            ok = True
+        except:
+            print("\nIdade inválida\n")
+            idade = input("Idade do lutador: ")
+    ok = False
+
+  
+    peso = input("Peso do lutador (em kgs): ")
+    while(ok == False):
+        try:
+            peso = int(peso)
+            ok = True
+        except:
+            print("\nPeso inválido\n")
+            peso = input("Peso do lutador: ")
+    ok = False
+    
+    
+    forca = input("Forca do lutador: ")
+    while(ok == False):
+        try:
+            forca = int(forca)
+            ok = True
+        except:
+            print("\nForca inválida\n")
+            forca = input("Forca do lutador: ")
+    ok = False
+
+    
+    faixa = input("Faixa do lutador: ")
+    while(ok == False):
+        if(faixa != ''):
+            ok = True
+        else:
+            print("\nFaixa inválida\n")
+            faixa = input("Faixa do lutador: ")
+    ok = False
+
+    
+    estiloLuta = input("Arte marcial do lutador: ")
+    while(ok == False):
+        if(estiloLuta != ''):
+            ok = True
+        else:
+            print("\nArte Marcial inválida\n")
+            estiloLuta = input("Arte Marcial do lutador: ")
+    ok = False
+
+    lutadores.append(lutador(nome, idade, peso, forca, faixa, estiloLuta))
+    print("Jogador Cadastrado!\n")
+    menu_lutador(lutadores, torneios)
+    
+
+def ver_lutadores_cadastrados(lutadores, torneios):
+    for count in range(0,len(lutadores),1):
+        print(f"Lutador {count+1}: nome: {lutadores[count].nome}, idade: {lutadores[count].idade}, peso: {lutadores[count].peso}, forca: {lutadores[count].forca}, faixa: {lutadores[count].faixa}, Arte Marcial: {lutadores[count].estiloLuta}, Vitórias: {lutadores[count].vitorias}, Derrotas: {lutadores[count].derrotas}")
+    menu_lutador(lutadores, torneios)
+    
 
 def ver_detalhes():
     print("ver_detalhes()")
@@ -189,12 +258,57 @@ def ver_detalhes():
 def torneio_random():
     print("torneio_random()")
 
+# Classes
 
+class lutador:
+
+    #Mínimos
+    #nome
+    #idade
+    #peso
+    #forca
+    #faixa
+    #estiloLuta
+
+    vitorias = 0
+    derrotas = 0
+
+    def __init__(self, nome, idade, peso, forca, faixa, estiloLuta):
+        self.nome = nome
+        self.idade = idade
+        self.peso = peso
+        self.forca = forca
+        self.faixa = faixa
+        self.estiloLuta = estiloLuta
+
+    def __str__(self):
+        return f'Lutador -> nome: {self.nome}, idade: {self.idade}, peso: {self.peso}, forca: {self.forca}, faixa: {self.faixa}, estiloLuta: {self.estiloLuta}'
+
+
+class torneio:
+
+    #Minimos
+    #nome
+    #pesos
+    #faixas
+    #estiloLuta
+    
+    lutadores = []
+
+    def __init__(self, nome, pesos, faixas, estiloLuta):
+        self.nome = nome
+        self.pesos = pesos
+        self.faixas = faixas
+        self.estiloLuta = estiloLuta
+
+    def __str__(self):
+        return f'Torneio -> nome: {self.nome},pesos: {self.pesos}, faixas: {self.faixas}, estiloLuta: {self.estiloLuta}'
 
 
 def main():
-    
-    start_menu()
+    lutadores = []
+    torneios = []
+    start_menu(lutadores, torneios)
     
     
 main()
