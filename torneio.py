@@ -2,6 +2,8 @@
 # Entrega 2 PAME 2020.2 - Python
 # Sistema torneios de artes marciais
 
+import sys
+
 def validar_opt(opt, maiorOpt):
     n = 0
     ok = False
@@ -43,7 +45,7 @@ def start_menu(lutadores, torneios): # primeiro menu exibido para o usuario
         
     if(ok == True): # seleção dos menus secundários
         if(opt == '4'):
-            return
+            sys.exit()
         elif(opt == '1'):
             print()
             menu_torneio(lutadores, torneios)
@@ -57,7 +59,6 @@ def start_menu(lutadores, torneios): # primeiro menu exibido para o usuario
     else:
         print_invalido()
         start_menu()
-
             
 
 def menu_torneio(lutadores, torneios): # menu secundário de torneio
@@ -81,7 +82,7 @@ def menu_torneio(lutadores, torneios): # menu secundário de torneio
         
     if(ok == True):
         if(opt == '8'):
-            return
+            sys.exit()
         elif(opt == '7'):
             print()
             start_menu(lutadores, torneios)
@@ -96,13 +97,13 @@ def menu_torneio(lutadores, torneios): # menu secundário de torneio
             ver_torneios(lutadores, torneios)
         elif(opt == '4'):
             print()
-            ver_ranking()
+            ver_ranking(lutadores, torneios)
         elif(opt == '5'):
             print()
-            ver_inscritos_torneio()
+            ver_inscritos_torneio(lutadores, torneios)
         else:
             print()
-            fazer_luta()
+            fazer_luta(lutadores, torneios)
             
             
     else:
@@ -129,7 +130,7 @@ def menu_lutador(lutadores, torneios): # menu secundário de lutador
         
     if(ok == True):
         if(opt == '5'):
-            return 
+            sys.exit() 
         elif(opt == '4'):
             print()
             start_menu(lutadores, torneios)
@@ -266,7 +267,7 @@ def inscrever_lutador_torneio(lutadores, torneios):
             break
 
     if(achou == False):
-        print("\nTorneio não criado, por favor o crie antes\n")
+        print("\nTorneio não criado, por favor, o crie antes\n")
         menu_torneio(lutadores, torneios)
     elif(achou == True and validacao == False):
         print("\nLutador não qualificado para este torneio. Tente outros torneios.\n")
@@ -298,14 +299,103 @@ def ver_torneios(lutadores, torneios):
     menu_torneio(lutadores, torneios)
     
     
-def ver_ranking():
-    print("ver_ranking()")
+def ver_ranking(lutadores, torneios):
+    torneio = input("Entre com o nome do torneio desejado: ")
+    ok = False
+    while(ok == False):
+        if(torneio != ''):
+            ok = True
+        else:
+            print("\nTorneio inválido\n")
+            torneio = input("Torneio: ")
+    achou = False
+    print("1")
+    for count in range(0, len(torneios), 1):
+        print("2")
+        if(torneio == torneios[count].nome):
+            print("3")
+            achou = True
+            rank = fazer_ranking(torneios[count])
+            for count2 in range(0, len(rank),1):
+                print(f"Colocado {count2+1}: {rank[count2].nome}")
 
-def atualizar_ranking():
-    print("att")
+    if(achou == False):
+        print("\nTorneio não criado, por favor, o crie antes\n")
+    menu_torneio(lutadores, torneios)
+    
 
-def ver_inscritos_torneio():
-    print("ver_inscritos_torneio()")
+def fazer_ranking(torneio):
+    rank = []
+    for count in range(0,len(torneio.lutadores_inscritos),1):
+        rank.append(torneio.lutadores_inscritos[count])
+    mergeSort(rank)
+    
+    return rank
+
+def mergeSort(arr): # Algoritmo eficiente de sorting
+    if len(arr) > 1:
+ 
+         # Finding the mid of the array
+        mid = len(arr)//2
+ 
+        # Dividing the array elements
+        L = arr[:mid]
+ 
+        # into 2 halves
+        R = arr[mid:]
+ 
+        # Sorting the first half
+        mergeSort(L)
+ 
+        # Sorting the second half
+        mergeSort(R)
+ 
+        i = j = k = 0
+ 
+        # Copy data to temp arrays L[] and R[]
+        while i < len(L) and j < len(R):
+            if L[i].vitorias < R[j].vitorias:
+                arr[k] = L[i]
+                i += 1
+            else:
+                arr[k] = R[j]
+                j += 1
+            k += 1
+ 
+        # Checking if any element was left
+        while i < len(L):
+            arr[k] = L[i]
+            i += 1
+            k += 1
+ 
+        while j < len(R):
+            arr[k] = R[j]
+            j += 1
+            k += 1
+
+def ver_inscritos_torneio(lutadores, torneios):
+    
+    torneio = input("Entre com o nome do torneio desejado: ")
+    ok = False
+    while(ok == False):
+        if(torneio != ''):
+            ok = True
+        else:
+            print("\nTorneio Inválido.\n")
+            torneio = input("Torneio: ")
+    achou = False
+    print("1")
+    for count in range(0, len(torneios), 1):
+        print("2")
+        if(torneio == torneios[count].nome):
+            print("3")
+            achou = True
+            for count2 in range(0, len(torneios[count].lutadores_inscritos),1):
+                print(f"Lutador {count2+1}: {torneios[count].lutadores_inscritos[count2].nome}")
+
+    if(achou == False):
+        print("\nTorneio não criado, por favor, o crie antes\n")
+    menu_torneio(lutadores, torneios)
 
 def fazer_luta():
     print("fazer_luta()")
@@ -452,7 +542,6 @@ class torneio:
     faixas = []
     estiloLuta = '' # Cada torneio só vai permitir 1 estilo de luta
     lutadores_inscritos = []
-    ranking = []
 
   #  def __init__(self, nome, pesos, faixas, estiloLuta):
    #     self.nome = nome
@@ -461,7 +550,7 @@ class torneio:
       #  self.estiloLuta = estiloLuta
 
     def __str__(self):
-        return f'Torneio -> nome: {self.nome},pesos: {self.pesos}, faixas: {self.faixas}, estiloLuta: {self.estiloLuta}, lutadores: {self.lutadores_inscritos}, ranking: {self.ranking}'
+        return f'Torneio -> nome: {self.nome},pesos: {self.pesos}, faixas: {self.faixas}, estiloLuta: {self.estiloLuta}, lutadores: {self.lutadores_inscritos}'
 
     def setNome(self, nome):
         self.nome = nome
