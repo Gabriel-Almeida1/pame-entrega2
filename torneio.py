@@ -87,7 +87,7 @@ def menu_torneio(lutadores, torneios): # menu secundário de torneio
             start_menu(lutadores, torneios)
         elif(opt == '1'):
             print()
-            criar_torneio()
+            criar_torneio(lutadores, torneios)
         elif(opt == '2'):
             print()
             inscrever_lutador_torneio()
@@ -153,8 +153,76 @@ def menu_random(): # menu secundário de torneio random
 
 # Funções do menu Torneio abaixo
 
-def criar_torneio():
-    print("criar_torneio()")
+def criar_torneio(lutadores, torneios):
+    ok = False
+
+    torneios.append(torneio())
+    
+    nome = input("Nome do torneio: ")
+    while(ok == False):
+        if(nome != ''):
+            ok = True
+        else:
+            print("\nNome inválido\n")
+            nome = input("Nome do torneio: ")
+    ok = False
+    torneios[-1].nome = nome
+
+
+    estiloLuta = input("Arte marcial do torneio: ")
+    while(ok == False):
+        if(estiloLuta != ''):
+            ok = True
+        else:
+            print("\nArte Marcial inválida\n")
+            estiloLuta = input("Arte Marcial do torneio: ")
+    ok = False
+    torneios[-1].estiloLuta = estiloLuta
+
+ 
+    print("Diga as faixas de peso permitidas no torneio:")
+    print("Exemplo:\n\nDe: 80\nAté: 90\n")
+    controle = False
+    while(controle == False):
+        
+        while(ok == False):
+            peso_inicial = input("De: ")
+            peso_final = input("Até: ")
+            try:
+                peso_inicial = int(peso_inicial)
+                peso_final = int(peso_final)
+                if(peso_inicial < peso_final):
+                    ok = True
+                else:
+                    print("Faixa Inválida. O primeiro peso inserido deve ser menor do que o segundo\n")
+            except:
+                print("\nPeso inválido. Lembre-se, o primeiro peso deve ser menor do que o segundo inserido\n")
+        ok = False
+        torneios[-1].pesos.append([peso_inicial,peso_final])
+        
+        resp = input("Deseja adicionar mais faixas de peso?(s/n) ")
+        if(resp == 'n'):
+            controle = True
+    
+    print("Diga as faixas permitidas no torneio: ")
+    controle = False
+    while(controle == False):
+        faixa = input("Faixa: ")
+        while(ok == False):
+            if(faixa != ''):
+                ok = True
+            else:
+                print("\nFaixa inválida\n")
+                faixa = input("Faixa: ")
+        ok = False
+        torneios[-1].faixas.append(faixa)
+        
+        resp = input("Deseja adicionar mais faixas?(s/n) ")
+        if(resp == 'n'):
+            controle = True
+            
+    print("\nTorneio Criado!\n")
+    menu_torneio(lutadores, torneios)
 
 def inscrever_lutador_torneio():
     print("inscrever_lutador_torneio()")
@@ -197,7 +265,7 @@ def cadastrar_lutador(lutadores, torneios):
     ok = False
 
   
-    peso = input("Peso do lutador (em kgs): ")
+    peso = input("Peso do lutador: ")
     while(ok == False):
         try:
             peso = int(peso)
@@ -308,17 +376,34 @@ class torneio:
     #pesos
     #faixas
     #estiloLuta
-    
+    nome = ''
     lutadores = []
+    pesos = []
+    faixas = []
+    estiloLuta = '' # Cada torneio só vai permitir 1 estilo de luta
+    
 
-    def __init__(self, nome, pesos, faixas, estiloLuta):
-        self.nome = nome
-        self.pesos = pesos
-        self.faixas = faixas
-        self.estiloLuta = estiloLuta
+  #  def __init__(self, nome, pesos, faixas, estiloLuta):
+   #     self.nome = nome
+    #    self.pesos = pesos
+     #   self.faixas = faixas
+      #  self.estiloLuta = estiloLuta
 
     def __str__(self):
         return f'Torneio -> nome: {self.nome},pesos: {self.pesos}, faixas: {self.faixas}, estiloLuta: {self.estiloLuta}'
+
+    def setNome(self, nome):
+        self.nome = nome
+
+    def setPesos(self, peso_inicial, peso_final):
+        self.pesos.append([peso_inicial, peso_final])
+
+    def setFaixas(self, faixa):
+        self.faixas.append(faixa)
+
+    def setEstilo(self, estiloLuta):
+        self.estiloLuta = estiloLuta
+        
 
 
 def main():
