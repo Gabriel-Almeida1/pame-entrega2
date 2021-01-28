@@ -52,7 +52,7 @@ def start_menu(lutadores, torneios): # primeiro menu exibido para o usuario
             menu_lutador(lutadores, torneios)
         else:
             print()
-            torneio_random(lutadores)
+            torneio_random(lutadores, torneios)
             
     else:
         print_invalido()
@@ -93,7 +93,7 @@ def menu_torneio(lutadores, torneios): # menu secundário de torneio
             inscrever_lutador_torneio(lutadores, torneios)
         elif(opt == '3'):
             print()
-            ver_torneios()
+            ver_torneios(lutadores, torneios)
         elif(opt == '4'):
             print()
             ver_ranking()
@@ -290,14 +290,19 @@ def validar_candidato(inscrito, torneio):
     if(achouPeso == True and achouFaixa == True and inscrito.estiloLuta == torneio.estiloLuta):
         return True
     else:
-        return False
-     
+        return False   
 
-def ver_torneios():
-    print("ver_torneios()")
+def ver_torneios(lutadores, torneios):
+    for count in range(0,len(torneios),1):
+        print(f"Torneio {torneios[count].nome}\n")
+    menu_torneio(lutadores, torneios)
+    
     
 def ver_ranking():
     print("ver_ranking()")
+
+def atualizar_ranking():
+    print("att")
 
 def ver_inscritos_torneio():
     print("ver_inscritos_torneio()")
