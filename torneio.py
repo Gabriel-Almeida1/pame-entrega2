@@ -90,7 +90,7 @@ def menu_torneio(lutadores, torneios): # menu secundário de torneio
             criar_torneio(lutadores, torneios)
         elif(opt == '2'):
             print()
-            inscrever_lutador_torneio()
+            inscrever_lutador_torneio(lutadores, torneios)
         elif(opt == '3'):
             print()
             ver_torneios()
@@ -224,8 +224,74 @@ def criar_torneio(lutadores, torneios):
     print("\nTorneio Criado!\n")
     menu_torneio(lutadores, torneios)
 
-def inscrever_lutador_torneio():
-    print("inscrever_lutador_torneio()")
+def inscrever_lutador_torneio(lutadores, torneios):
+
+    lutador = input("Entre com o nome do lutador que você quer inscrever: ")
+    ok = False
+    while(ok == False):
+        if(lutador != ''):
+            ok = True
+        else:
+            print("\nNome inválido\n")
+            lutador = input("Nome do lutador: ")
+
+    achou = False
+    for count in range(0,len(lutadores),1):
+        if(lutadores[count].nome == lutador):
+            inscrito = lutadores[count]
+            achou = True
+            break
+
+    if(achou == False):
+        print("\nLutador não cadastrado, por favor cadastre-o antes\n")
+        menu_lutador(lutadores, torneios)    
+
+
+    torneio = input("Entre com o torneio que este lutador deve ser inscrito: ")
+    ok = False
+    while(ok == False):
+        if(torneio != ''):
+            ok = True
+        else:
+            print("\nTorneio inválido\n")
+            torneio = input("Torneio: ")
+
+    achou = False
+    for count in range(0,len(torneios),1):
+        if(torneios[count].nome == torneio):
+            validacao = validar_candidato(inscrito, torneios[count])
+            if(validacao == True):
+                torneios[count].lutadores_inscritos.append(inscrito)
+            achou = True
+            break
+
+    if(achou == False):
+        print("\nTorneio não criado, por favor o crie antes\n")
+        menu_torneio(lutadores, torneios)
+    elif(achou == True and validacao == False):
+        print("\nLutador não qualificado para este torneio. Tente outros torneios.\n")
+        menu_torneio(lutadores, torneios)
+    
+    print("\nLutador Inscrito!\n")
+    menu_torneio(lutadores, torneios)
+
+def validar_candidato(inscrito, torneio):
+    achouFaixa = False
+    achouPeso = False
+    for count in range(0,len(torneio.faixas),1):
+        if(inscrito.faixa == torneio.faixas[count]):
+            achouFaixa = True
+            break
+    for count in range(0,len(torneio.pesos),1):
+        if(inscrito.peso >= torneio.pesos[count][0] and inscrito.peso <= torneio.pesos[count][1]):
+            achouPeso = True
+            break
+        
+    if(achouPeso == True and achouFaixa == True and inscrito.estiloLuta == torneio.estiloLuta):
+        return True
+    else:
+        return False
+     
 
 def ver_torneios():
     print("ver_torneios()")
@@ -377,11 +443,11 @@ class torneio:
     #faixas
     #estiloLuta
     nome = ''
-    lutadores = []
     pesos = []
     faixas = []
     estiloLuta = '' # Cada torneio só vai permitir 1 estilo de luta
-    
+    lutadores_inscritos = []
+    ranking = []
 
   #  def __init__(self, nome, pesos, faixas, estiloLuta):
    #     self.nome = nome
@@ -390,7 +456,7 @@ class torneio:
       #  self.estiloLuta = estiloLuta
 
     def __str__(self):
-        return f'Torneio -> nome: {self.nome},pesos: {self.pesos}, faixas: {self.faixas}, estiloLuta: {self.estiloLuta}'
+        return f'Torneio -> nome: {self.nome},pesos: {self.pesos}, faixas: {self.faixas}, estiloLuta: {self.estiloLuta}, lutadores: {self.lutadores_inscritos}, ranking: {self.ranking}'
 
     def setNome(self, nome):
         self.nome = nome
