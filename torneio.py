@@ -7,7 +7,6 @@ def validar_opt(opt, maiorOpt):
     ok = False
 
     if(len(opt) != 1):
-        print_invalido()
         return False
     
     while(n < (maiorOpt + 1) and ok == False):
@@ -142,11 +141,11 @@ def menu_lutador(lutadores, torneios): # menu secundário de lutador
             ver_lutadores_cadastrados(lutadores, torneios)
         else:
             print()
-            ver_detalhes()
+            ver_detalhes(lutadores, torneios)
             
     else:
         print_invalido()
-        menu_lutador()
+        menu_lutador(lutadores, torneios)
 
 
 def menu_random(): # menu secundário de torneio random
@@ -240,18 +239,35 @@ def cadastrar_lutador(lutadores, torneios):
     ok = False
 
     lutadores.append(lutador(nome, idade, peso, forca, faixa, estiloLuta))
-    print("Jogador Cadastrado!\n")
+    print("\nJogador Cadastrado!\n")
     menu_lutador(lutadores, torneios)
     
 
 def ver_lutadores_cadastrados(lutadores, torneios):
     for count in range(0,len(lutadores),1):
-        print(f"Lutador {count+1}: nome: {lutadores[count].nome}, idade: {lutadores[count].idade}, peso: {lutadores[count].peso}, forca: {lutadores[count].forca}, faixa: {lutadores[count].faixa}, Arte Marcial: {lutadores[count].estiloLuta}, Vitórias: {lutadores[count].vitorias}, Derrotas: {lutadores[count].derrotas}")
+        print(f"Lutador {count+1}: nome: {lutadores[count].nome}, idade: {lutadores[count].idade}\n")
     menu_lutador(lutadores, torneios)
     
 
-def ver_detalhes():
-    print("ver_detalhes()")
+def ver_detalhes(lutadores, torneios):
+    sair = False
+    achou = False
+    while(sair != True):
+        lutador = input("Qual lutador você gostaria de ver detalhes?\n")
+        for count in range(0,len(lutadores),1):
+            if(lutadores[count].nome == lutador):
+                achou = True
+                print(f"\nLutador: nome: {lutadores[count].nome}, idade: {lutadores[count].idade}, peso: {lutadores[count].peso}, forca: {lutadores[count].forca}, faixa: {lutadores[count].faixa}, Arte Marcial: {lutadores[count].estiloLuta}, Vitórias: {lutadores[count].vitorias}, Derrotas: {lutadores[count].derrotas}\n")
+        if(achou != True):
+            print("\nJogador não cadastrado.\n")
+            sair = True
+        else:
+            print("Gostaria de ver mais jogadores?")
+            escolha = input("(s/n): ")
+            if(escolha == 'n'):
+                sair = True
+    
+    menu_lutador(lutadores, torneios)
 
     
 # Funções Torneio Random
