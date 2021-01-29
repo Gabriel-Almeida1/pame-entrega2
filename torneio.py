@@ -312,11 +312,11 @@ def ver_ranking(lutadores, torneios):
             print("\nTorneio inválido\n")
             torneio = input("Torneio: ")
     achou = False
-    print("1")
+
     for count in range(0, len(torneios), 1):
-        print("2")
+
         if(torneio == torneios[count].nome):
-            print("3")
+
             achou = True
             mergeSort(torneios[count].vitorias)
             for count2 in range(len(torneios[count].vitorias)-1,-1,-1):
@@ -556,8 +556,59 @@ def ver_detalhes(lutadores, torneios):
 
     
 # Funções Torneio Random
-def torneio_random():
-    print("torneio_random()")
+def torneio_random(lutadores, torneios):
+    # Usuário: numero de lutadores que ele quer
+    listaFaixas = ["branca", "azul", "amarela", "preta", "marrom", "laranja" , "cinza", "verde", "roxa", "vermelha", "Livre"]
+    listaAM = ["jiu jitsu","muay thai","judo","krav maga", "kung fu","taekwondo", "karate"]
+    listaNomes = ["Martin","Matteo","Oliver","Arthur Gabriel","Ryan","Raul","Luan","Tomás","Mathias","Davi Luiz","Pedro Lucas","Derick","Vitor Hugo","Kauê","Lucas Gabriel","Arthur Henrique","Rodrigo","Bruno","Davi Miguel","Yago","José","Pedro Miguel","Luiz Henrique","Hugo","Otto","JosuéHelena","Alice","Laura","Manuela","Valentina","Sophia","Isabella","Heloísa","Luiza","Júlia","Lorena","Lívia","Maria Luiza","Cecília","Eloá","Giovanna","Maria Clara","Maria Eduarda","Mariana","Lara","Beatriz","Antonella","Maria Júlia","Emanuelly","Isadora","Ana Clara","Melissa","Ana Luiza","Ana Júlia","Esther","Lavínia","Maitê","Maria Cecília","Maria Alice","Sarah","Elisa","Liz","Yasmin","Isabelly","Alícia","Clara","Isis","Rebeca","Rafaela","Marina","Ana Laura","Maria Helena","Agatha","Gabriela","Catarina","Letícia","Mirella","Nicole","Luna","Maria Vitória","Olívia","Vitória","Maria","Maria Fernanda","Ana Beatriz","Allana","Maria Valentina","Milena","Emilly","Ayla","Maria Flor","Maya","Bianca","Clarice","Aurora","Larissa","Mariah","Pietra","Laís","Stella","Eduarda","Maria Heloísa","Ana Lívia","Ana Sophia","Maria Laura","Carolina","Ana Vitória","Malu","Gabrielly","Ana Liz","Analu","Maria Sophia","Ana Cecília","Amanda","Louise","Heloise","Fernanda","Ana","Melina","Maria Isis","Bella","Joana","Isabel","Melinda","Pérola","Miguel","Arthur","Heitor","Bernardo","Théo","Davi","Gabriel","Pedro","Samuel","Lorenzo","Benjamin","Matheus","Lucas","Benício","Gael","Joaquim","Nicolas","Henrique","Rafael","Isaac","Guilherme","Murilo","Lucca","Gustavo","João Miguel","Noah","Felipe","Anthony","Enzo","João Pedro","Pietro","Bryan","Daniel","Pedro Henrique","Enzo Gabriel","Leonardo","Vicente","Valentim","Eduardo","Antônio","Emanuel","Davi Lucca","Bento","João","João Lucas","Caleb","Levi","Vitor","Enrico","Cauã","Caio","Vinícius","Henry","João Gabriel","Augusto","Ravi","Francisco","Otávio","Davi Lucas","João Guilherme","Thomas","Ícaro","Theodoro","João Vitor","Luiz Miguel","Yan","Yuri Thiago","Arthur Miguel","Nathan","Erick","Breno","Luiz Felipe","Anthony Gabriel"]
+
+    nLutadores = input("Insira o número de lutadores: ")
+    ok = False
+    while(ok == False):
+        try:
+            nLutadores = int(nLutadores)
+            ok = True
+            if(nLutadores > 10000):
+                print("Número excede o limite(10000), tente novamente")
+                ok = False
+                nLutadores = 'a'
+        except:
+            print("\nNúmero inválido\n")
+            nLutadores = input("Insira o número de lutadores: ")
+    i = 0
+    while(i < nLutadores):
+        lutadores.append(lutador(random.choice(listaNomes), random.randint(15,100), random.randint(40, 250), random.randint(15, 250), random.choice(listaFaixas), random.choice(listaAM)))
+        i+=1
+
+    torneios.append(torneio())
+    torneios[-1].nome = "aleatorio"
+
+    for count in range(0, random.randint(1,10),1):
+        minPeso = int(random.randint(random.randint(15,60),random.randint(61,125)))
+        torneios[-1].pesos.append([minPeso,random.randint(random.randint(minPeso,int(((250-minPeso)/2)+minPeso)),random.randint(int((((250-minPeso)/2)+minPeso+1)),250))])
+
+    torneios[-1].faixas.append(random.choice(listaFaixas))
+    torneios[-1].estiloLuta = random.choice(listaAM)
+ 
+    i = 0
+    while(i < nLutadores):
+       # print("lutadores[i].estiloLuta")
+      #  print(lutadores[i].estiloLuta)
+       # print("torneios[-1].estiloLuta")
+       # print(torneios[-1].estiloLuta)
+       # print("lutadores[i].faixa")
+       # print(lutadores[i].faixa)
+       # print("torneios[-1].faixas[0]")
+       # print(torneios[-1].faixas[0])
+        if(lutadores[i].estiloLuta == torneios[-1].estiloLuta and lutadores[i].faixa == torneios[-1].faixas[0]):
+            torneios[-1].lutadores_inscritos.append(lutadores[i])
+            torneios[-1].vitorias.append([lutadores[i],0])
+            torneios[-1].derrotas.append([lutadores[i],0])
+        i+=1
+
+    print("\nTorneio Aleatório criado!\n")
+    start_menu(lutadores, torneios)
+
 
 # Classes
 
@@ -592,7 +643,7 @@ class torneio:
     #estiloLuta
     nome = ''
     pesos = []
-    faixas = []
+    faixas = [] # Cada torneio só vai ter uma faixa
     estiloLuta = '' # Cada torneio só vai permitir 1 estilo de luta
     lutadores_inscritos = []
     vitorias = [] # [[lutador1,5],[lutador2,10],...]
