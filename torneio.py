@@ -5,7 +5,7 @@
 import sys
 import random
 
-def validar_opt(opt, maiorOpt):
+def validar_opt(opt, maiorOpt): # Função para avaliar se o input de escolha do usuário é válido
     n = 0
     ok = False
 
@@ -149,9 +149,6 @@ def menu_lutador(lutadores, torneios): # menu secundário de lutador
         print_invalido()
         menu_lutador(lutadores, torneios)
 
-
-def menu_random(): # menu secundário de torneio random
-    print("menu_random")
 
 # Funções do menu Torneio abaixo
 
@@ -453,7 +450,7 @@ def fazer_luta(lutadores, torneios):
         torneios[pos0].vitorias[pos2][1] += 1
         torneios[pos0].derrotas[pos1][1] += 1
     print(f"\nLuta entre {lutador1} e {lutador2}!!\n")
-    print(f"Vencedor é: {vencedor.nome}\n")
+    print(f"Vencedor(a) é: {vencedor.nome}\n")
     menu_torneio(lutadores, torneios)
             
 # Funções do menu Lutador abaixo
@@ -542,7 +539,7 @@ def ver_detalhes(lutadores, torneios):
         for count in range(0,len(lutadores),1):
             if(lutadores[count].nome == lutador):
                 achou = True
-                print(f"\nLutador: nome: {lutadores[count].nome}, idade: {lutadores[count].idade}, peso: {lutadores[count].peso}, forca: {lutadores[count].forca}, faixa: {lutadores[count].faixa}, Arte Marcial: {lutadores[count].estiloLuta}, Vitórias: {lutadores[count].vitorias}, Derrotas: {lutadores[count].derrotas}\n")
+                print(f"\nLutador: nome: {lutadores[count].nome}, idade: {lutadores[count].idade}, peso: {lutadores[count].peso}, forca: {lutadores[count].forca}, faixa: {lutadores[count].faixa}, Arte Marcial: {lutadores[count].estiloLuta}\n")
         if(achou != True):
             print("\nJogador não cadastrado.\n")
             sair = True
@@ -558,6 +555,9 @@ def ver_detalhes(lutadores, torneios):
 # Funções Torneio Random
 def torneio_random(lutadores, torneios):
     # Usuário: numero de lutadores que ele quer
+
+    # Lista para seleção aleatória
+    # ListaNomes com 200 nomes
     listaFaixas = ["branca", "azul", "amarela", "preta", "marrom", "laranja" , "cinza", "verde", "roxa", "vermelha", "Livre"]
     listaAM = ["jiu jitsu","muay thai","judo","krav maga", "kung fu","taekwondo", "karate"]
     listaNomes = ["Martin","Matteo","Oliver","Arthur Gabriel","Ryan","Raul","Luan","Tomás","Mathias","Davi Luiz","Pedro Lucas","Derick","Vitor Hugo","Kauê","Lucas Gabriel","Arthur Henrique","Rodrigo","Bruno","Davi Miguel","Yago","José","Pedro Miguel","Luiz Henrique","Hugo","Otto","JosuéHelena","Alice","Laura","Manuela","Valentina","Sophia","Isabella","Heloísa","Luiza","Júlia","Lorena","Lívia","Maria Luiza","Cecília","Eloá","Giovanna","Maria Clara","Maria Eduarda","Mariana","Lara","Beatriz","Antonella","Maria Júlia","Emanuelly","Isadora","Ana Clara","Melissa","Ana Luiza","Ana Júlia","Esther","Lavínia","Maitê","Maria Cecília","Maria Alice","Sarah","Elisa","Liz","Yasmin","Isabelly","Alícia","Clara","Isis","Rebeca","Rafaela","Marina","Ana Laura","Maria Helena","Agatha","Gabriela","Catarina","Letícia","Mirella","Nicole","Luna","Maria Vitória","Olívia","Vitória","Maria","Maria Fernanda","Ana Beatriz","Allana","Maria Valentina","Milena","Emilly","Ayla","Maria Flor","Maya","Bianca","Clarice","Aurora","Larissa","Mariah","Pietra","Laís","Stella","Eduarda","Maria Heloísa","Ana Lívia","Ana Sophia","Maria Laura","Carolina","Ana Vitória","Malu","Gabrielly","Ana Liz","Analu","Maria Sophia","Ana Cecília","Amanda","Louise","Heloise","Fernanda","Ana","Melina","Maria Isis","Bella","Joana","Isabel","Melinda","Pérola","Miguel","Arthur","Heitor","Bernardo","Théo","Davi","Gabriel","Pedro","Samuel","Lorenzo","Benjamin","Matheus","Lucas","Benício","Gael","Joaquim","Nicolas","Henrique","Rafael","Isaac","Guilherme","Murilo","Lucca","Gustavo","João Miguel","Noah","Felipe","Anthony","Enzo","João Pedro","Pietro","Bryan","Daniel","Pedro Henrique","Enzo Gabriel","Leonardo","Vicente","Valentim","Eduardo","Antônio","Emanuel","Davi Lucca","Bento","João","João Lucas","Caleb","Levi","Vitor","Enrico","Cauã","Caio","Vinícius","Henry","João Gabriel","Augusto","Ravi","Francisco","Otávio","Davi Lucas","João Guilherme","Thomas","Ícaro","Theodoro","João Vitor","Luiz Miguel","Yan","Yuri Thiago","Arthur Miguel","Nathan","Erick","Breno","Luiz Felipe","Anthony Gabriel"]
@@ -576,12 +576,12 @@ def torneio_random(lutadores, torneios):
             print("\nNúmero inválido\n")
             nLutadores = input("Insira o número de lutadores: ")
     i = 0
-    while(i < nLutadores):
+    while(i < nLutadores): # Adicionar lutadores na lista de lutadores
         lutadores.append(lutador(random.choice(listaNomes), random.randint(15,100), random.randint(40, 250), random.randint(15, 250), random.choice(listaFaixas), random.choice(listaAM)))
         i+=1
 
     torneios.append(torneio())
-    torneios[-1].nome = "aleatorio"
+    torneios[-1].nome = "aleatorio" # Criando torneio
 
     for count in range(0, random.randint(1,10),1):
         minPeso = int(random.randint(random.randint(15,60),random.randint(61,125)))
@@ -592,14 +592,6 @@ def torneio_random(lutadores, torneios):
  
     i = 0
     while(i < nLutadores):
-       # print("lutadores[i].estiloLuta")
-      #  print(lutadores[i].estiloLuta)
-       # print("torneios[-1].estiloLuta")
-       # print(torneios[-1].estiloLuta)
-       # print("lutadores[i].faixa")
-       # print(lutadores[i].faixa)
-       # print("torneios[-1].faixas[0]")
-       # print(torneios[-1].faixas[0])
         if(lutadores[i].estiloLuta == torneios[-1].estiloLuta and lutadores[i].faixa == torneios[-1].faixas[0]):
             torneios[-1].lutadores_inscritos.append(lutadores[i])
             torneios[-1].vitorias.append([lutadores[i],0])
@@ -643,34 +635,15 @@ class torneio:
     #estiloLuta
     nome = ''
     pesos = []
-    faixas = [] # Cada torneio só vai ter uma faixa
+    faixas = [] 
     estiloLuta = '' # Cada torneio só vai permitir 1 estilo de luta
     lutadores_inscritos = []
     vitorias = [] # [[lutador1,5],[lutador2,10],...]
     derrotas = [] # [[lutador1,1],[lutador2,5],...]
 
-  #  def __init__(self, nome, pesos, faixas, estiloLuta):
-   #     self.nome = nome
-    #    self.pesos = pesos
-     #   self.faixas = faixas
-      #  self.estiloLuta = estiloLuta
-
     def __str__(self):
         return f'Torneio -> nome: {self.nome},pesos: {self.pesos}, faixas: {self.faixas}, estiloLuta: {self.estiloLuta}, lutadores: {self.lutadores_inscritos}'
-
-    def setNome(self, nome):
-        self.nome = nome
-
-    def setPesos(self, peso_inicial, peso_final):
-        self.pesos.append([peso_inicial, peso_final])
-
-    def setFaixas(self, faixa):
-        self.faixas.append(faixa)
-
-    def setEstilo(self, estiloLuta):
-        self.estiloLuta = estiloLuta
         
-
 
 def main():
     lutadores = []
