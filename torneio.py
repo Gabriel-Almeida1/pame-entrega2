@@ -3,6 +3,7 @@
 # Sistema torneios de artes marciais
 
 import sys
+import random
 
 def validar_opt(opt, maiorOpt):
     n = 0
@@ -263,6 +264,8 @@ def inscrever_lutador_torneio(lutadores, torneios):
             validacao = validar_candidato(inscrito, torneios[count])
             if(validacao == True):
                 torneios[count].lutadores_inscritos.append(inscrito)
+                torneios[count].vitorias.append([inscrito,0])
+                torneios[count].derrotas.append([inscrito,0])
             achou = True
             break
 
@@ -315,22 +318,14 @@ def ver_ranking(lutadores, torneios):
         if(torneio == torneios[count].nome):
             print("3")
             achou = True
-            rank = fazer_ranking(torneios[count])
-            for count2 in range(0, len(rank),1):
-                print(f"Colocado {count2+1}: {rank[count2].nome}")
+            mergeSort(torneios[count].vitorias)
+            for count2 in range(len(torneios[count].vitorias)-1,-1,-1):
+                print(f"Colocado {len(torneios[count].vitorias)-count2}: {torneios[count].vitorias[count2][0].nome} com {torneios[count].vitorias[count2][1]} vitórias")
 
     if(achou == False):
         print("\nTorneio não criado, por favor, o crie antes\n")
     menu_torneio(lutadores, torneios)
-    
 
-def fazer_ranking(torneio):
-    rank = []
-    for count in range(0,len(torneio.lutadores_inscritos),1):
-        rank.append(torneio.lutadores_inscritos[count])
-    mergeSort(rank)
-    
-    return rank
 
 def mergeSort(arr): # Algoritmo eficiente de sorting
     if len(arr) > 1:
@@ -354,7 +349,7 @@ def mergeSort(arr): # Algoritmo eficiente de sorting
  
         # Copy data to temp arrays L[] and R[]
         while i < len(L) and j < len(R):
-            if L[i].vitorias < R[j].vitorias:
+            if L[i][1] < R[j][1]:
                 arr[k] = L[i]
                 i += 1
             else:
@@ -384,11 +379,11 @@ def ver_inscritos_torneio(lutadores, torneios):
             print("\nTorneio Inválido.\n")
             torneio = input("Torneio: ")
     achou = False
-    print("1")
+
     for count in range(0, len(torneios), 1):
-        print("2")
+
         if(torneio == torneios[count].nome):
-            print("3")
+
             achou = True
             for count2 in range(0, len(torneios[count].lutadores_inscritos),1):
                 print(f"Lutador {count2+1}: {torneios[count].lutadores_inscritos[count2].nome}")
@@ -397,9 +392,70 @@ def ver_inscritos_torneio(lutadores, torneios):
         print("\nTorneio não criado, por favor, o crie antes\n")
     menu_torneio(lutadores, torneios)
 
-def fazer_luta():
-    print("fazer_luta()")
+def fazer_luta(lutadores, torneios):
+    torneio = input("Entre com o nome do torneio desejado: ")
+    ok = False
+    while(ok == False):
+        if(torneio != ''):
+            ok = True
+        else:
+            print("\nTorneio Inválido.\n")
+            torneio = input("Torneio: ")
+    achou = False
+    for count in range(0, len(torneios), 1):
+        if(torneio == torneios[count].nome):
+            pos0 = count
+            achou = True
+            ok = False
+    
+            lutador1 = input("Nome do lutador 1: ")
+            while(ok == False):
+                if(lutador1 != ''):
+                    ok = True
+                else:
+                    print("\nNome inválido\n")
+                    lutador1 = input("Nome do lutador 1: ")
+            ok = False
 
+            lutador2 = input("Nome do lutador 2: ")     # Achou - Torneio; Achou1 - lutador1; Achou2 - lutador2
+            while(ok == False):                         # pos0 - torneio; pos1 - lutador1; pos2 - lutador2
+                if(lutador2 != ''):
+                    ok = True
+                else:
+                    print("\nNome inválido\n")
+                    lutador2 = input("Nome do lutador 2: ")
+            ok = False
+
+            achou1 = False
+            achou2 = False
+
+            for count2 in range(0, len(torneios[count].vitorias), 1):
+                if(torneios[count].vitorias[count2][0].nome == lutador1):
+                    achou1 = True
+                    pos1 = count2
+                if(torneios[count].vitorias[count2][0].nome == lutador2):
+                    achou2 = True
+                    pos2 = count2
+
+    if(achou == False):
+        print("\nTorneio não criado, por favor, o crie antes\n")
+        menu_torneio(lutadores, torneios)
+    if(achou1 == False or achou2 == False):
+        print("\nLutador(es) não encontrado(s) neste torneio, por favor, inscreva-o(s) antes.\n")
+        menu_torneio(lutadores, torneios)
+
+
+    vencedor = random.choice([torneios[pos0].vitorias[pos1][0],torneios[pos0].vitorias[pos2][0]])
+    if(vencedor == torneios[pos0].vitorias[pos1][0]):
+        torneios[pos0].vitorias[pos1][1] += 1
+        torneios[pos0].derrotas[pos2][1] += 1
+    else:
+        torneios[pos0].vitorias[pos2][1] += 1
+        torneios[pos0].derrotas[pos1][1] += 1
+    print(f"\nLuta entre {lutador1} e {lutador2}!!\n")
+    print(f"Vencedor é: {vencedor.nome}\n")
+    menu_torneio(lutadores, torneios)
+            
 # Funções do menu Lutador abaixo
 
 def cadastrar_lutador(lutadores, torneios):
@@ -515,9 +571,6 @@ class lutador:
     #faixa
     #estiloLuta
 
-    vitorias = 0
-    derrotas = 0
-
     def __init__(self, nome, idade, peso, forca, faixa, estiloLuta):
         self.nome = nome
         self.idade = idade
@@ -542,6 +595,8 @@ class torneio:
     faixas = []
     estiloLuta = '' # Cada torneio só vai permitir 1 estilo de luta
     lutadores_inscritos = []
+    vitorias = [] # [[lutador1,5],[lutador2,10],...]
+    derrotas = [] # [[lutador1,1],[lutador2,5],...]
 
   #  def __init__(self, nome, pesos, faixas, estiloLuta):
    #     self.nome = nome
