@@ -648,6 +648,7 @@ class torneio:
 def main():
     lutadores = []
     torneios = []
+    print()
     start_menu(lutadores, torneios)
     
     
